@@ -1,0 +1,18 @@
+dependencies {
+    api project(":mybatis-plus-generator")
+    api project(":mybatis-plus-boot-starter")
+
+
+
+    implementation "org.springframework.boot:spring-boot-starter-parent:2.1.0.RELEASE"
+    implementation "org.springframework.boot:spring-boot-starter-web:2.1.0.RELEASE"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf:2.1.0.RELEASE"
+    implementation "mysql:mysql-connector-java:8.0.15"
+    implementation "com.alibaba:druid:1.1.6"
+    implementation "com.alibaba:fastjson:1.2.59"
+    implementation "io.springfox:springfox-swagger2:2.9.2"
+    implementation "io.springfox:springfox-swagger-ui:2.9.2"
+    
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.1.0.RELEASE'
+}

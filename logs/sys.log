@@ -1,0 +1,19 @@
+2019-10-31 16:26:53.402 DEBUG 1025 --- [background-preinit] .h.v.m.ResourceBundleMessageInterpolator : Loaded expression factory via original TCCL
+2019-10-31 16:26:53.480  INFO 1025 --- [main] com.kisin.GenWebServerApplication    : Starting GenWebServerApplication on localhost with PID 1025 (/Users/bin/SoftwareWork/java_code/mybatis-plus/mybatis-plus-webgen/out/production/classes started by bin in /Users/bin/SoftwareWork/java_code/mybatis-plus)
+2019-10-31 16:26:53.481  INFO 1025 --- [main] com.kisin.GenWebServerApplication    : No active profile set, falling back to default profiles: default
+2019-10-31 16:26:53.559  WARN 1025 --- [background-preinit] o.s.h.c.j.Jackson2ObjectMapperBuilder    : For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
+2019-10-31 16:26:54.571  INFO 1025 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8888 (http)
+2019-10-31 16:26:54.589  INFO 1025 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-10-31 16:26:54.590  INFO 1025 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.21]
+2019-10-31 16:26:54.663  INFO 1025 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-10-31 16:26:54.664  INFO 1025 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1151 ms
+2019-10-31 16:26:55.237  INFO 1025 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-31 16:26:55.326  WARN 1025 --- [main] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][main] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2019-10-31 16:26:55.501  INFO 1025 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8888 (http) with context path ''
+2019-10-31 16:26:55.506  INFO 1025 --- [main] com.kisin.GenWebServerApplication    : Started GenWebServerApplication in 2.414 seconds (JVM running for 3.03)
+2019-10-31 16:27:02.133  INFO 1025 --- [http-nio-8888-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-10-31 16:27:02.133  INFO 1025 --- [http-nio-8888-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-10-31 16:27:02.139  INFO 1025 --- [http-nio-8888-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2019-10-31 16:27:02.717  INFO 1025 --- [http-nio-8888-exec-9] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2019-10-31 16:27:59.222  INFO 1025 --- [Thread-8] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-10-31 16:27:59.230  INFO 1025 --- [Thread-8] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
