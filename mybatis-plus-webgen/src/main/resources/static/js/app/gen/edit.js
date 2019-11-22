@@ -73,6 +73,6 @@ $(function () {
 
     $this.init();
     $this.loadSelect();
-    $this.loadTable();
+    //$this.loadTable();
     $this.initEvent();
 });
