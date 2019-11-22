@@ -15,11 +15,16 @@
  */
 package com.baomidou.mybatisplus.generator.config.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
-import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
+import com.baomidou.mybatisplus.generator.config.rules.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -32,24 +37,44 @@ import java.util.Map;
  * @since 2016-12-03
  */
 @Data
+@KeySequence
 @Accessors(chain = true)
-public class TableField {
+@TableName("t_table_field")
+public class TableField extends Model<TableField> {
 
-    private boolean convert;
-    private boolean keyFlag;
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "field_id", type = IdType.UUID)
+    private String fieldId;
+    private String tableId;
+    private String comment;
+    private Boolean keyFlag;
     /**
      * 主键是否为自增类型
      */
-    private boolean keyIdentityFlag;
+    private Boolean keyIdentityFlag;
     private String name;
-    private String type;
     private String propertyName;
+    private String propertyType;
+    private String type;
+    private String lableName;
+    private Integer cellNum;
+    private Boolean edit;
+    private Boolean list;
+    private Integer inputType;
+    private String inputTypeValue;
+    private String dictType;
+
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private boolean convert;
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
     private IColumnType columnType;
-    private String comment;
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
     private String fill;
     /**
      * 自定义查询字段列表
      */
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
     private Map<String, Object> customMap;
 
     public TableField setConvert(boolean convert) {
@@ -78,6 +103,22 @@ public class TableField {
         return this;
     }
 
+    public void setPropertyType(String propertyType){}
+
+    public void setType(String type){
+        if(this.columnType==null) {
+            this.columnType = new MySqlTypeConvert().processTypeConvert(new GlobalConfig(), type);
+        }
+        this.type = type;
+    }
+
+    public IColumnType getColumnType(){
+        if(this.columnType==null) {
+            this.columnType = new MySqlTypeConvert().processTypeConvert(new GlobalConfig(), this.type);
+        }
+        return this.columnType;
+    }
+
     public TableField setPropertyName(StrategyConfig strategyConfig, String propertyName) {
         this.propertyName = propertyName;
         this.setConvert(strategyConfig);
@@ -99,7 +140,7 @@ public class TableField {
             return propertyName.toUpperCase();
         }
         String setGetName = propertyName;
-        if (DbColumnType.BASE_BOOLEAN.getType().equalsIgnoreCase(columnType.getType())) {
+        if (DbColumnType.BASE_BOOLEAN.getType().equalsIgnoreCase(getColumnType().getType())) {
             setGetName = StringUtils.removeIsPrefixIfBoolean(setGetName, Boolean.class);
         }
         // 第一个字母 小写、 第二个字母 大写 ，特殊处理
@@ -109,5 +150,15 @@ public class TableField {
             return firstChar.toLowerCase() + setGetName.substring(1);
         }
         return firstChar.toUpperCase() + setGetName.substring(1);
+    }
+
+    public InputTypeEnum getInputTypeEnum() {
+        if(this.inputType==null)return null;
+        return InputTypeEnum.getInputType(this.inputType);
+    }
+
+    public RowCellSizeEnum getCellNumEnum() {
+        if(this.cellNum==null)return null;
+        return RowCellSizeEnum.getRowCellSize(this.cellNum);
     }
 }

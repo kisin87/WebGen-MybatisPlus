@@ -1,0 +1,82 @@
+$(function(){
+    $this = {
+        showTable:$('.showDataTable'),
+        init: function(){
+            this.showTable.bootstrapTable({
+                method: 'post',
+                url: '<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>/list',
+                striped: true, // 设置为true会有隔行变色效果
+                dataType: "json", // 服务器返回的数据类型
+                showColumns: false,
+                pagination: true,
+                pageSize: 10,
+                sidePagination: "server",
+                contentType: 'application/x-www-form-urlencoded',
+                columns: [
+                    {formatter: (v, r, i) => i + 1},
+                    <% for(field in table.fields){if(isNotEmpty(field.list) && field.list){%>
+                    {field: '${field.propertyName}', title: '${field.lableName}'<%if(isNotEmpty(field.dictType)){%>, formatter:$this.${field.propertyName}Formatter<%}%>},
+                    <%}}%>
+                    {title: '操作', align: 'center', formatter:$this.operateFun}
+                ],
+                onLoadSuccess: $this.initEvent
+            });
+        },
+        initEvent: function () {
+            $('.newBtn').click(function () {
+                $this.openTo('<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>/edit');
+            });
+
+            $('.rowViewBtn').click(function () {
+                let index = $(this).attr('val');
+                $this.openTo('<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>/view?'+kisin.toUrlQuery($this.ids(index)));
+            });
+
+            $('.rowEditBtn').click(function () {
+                let index = $(this).attr('val');
+                $this.openTo('<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>/edit?'+kisin.toUrlQuery($this.ids(index)));
+            });
+
+            $('.rowRemoveBtn').click(function () {
+                let index = $(this).attr('val');
+                layer.confirm('你确定要删除当前数据吗？', function () {
+                    $.post('<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>/remove', $this.ids(index), function(result){
+                        if(result && result.code=='200'){
+                            layer.msg('删除成功！', {time: 600}, function(){location.reload()});
+                        }else{
+                            layer.msg('删除失败！');
+                        }
+                    });
+                });
+            });
+        },
+        <% for(field in table.fields){if(isNotEmpty(field.dictType)){%>
+        ${field.propertyName}Formatter: function(v, r){
+            return r['${field.propertyName}Dict'].dictName;
+        },
+        <% }} %>
+        ids: function (index) {
+            let tableData = $this.showTable.bootstrapTable('getData');
+            let ids = new Object();
+            <% for(field in table.fields){if(field.keyFlag){%>
+                ids.${field.propertyName} = tableData[index].${field.propertyName};
+            <% }} %>
+            return ids;
+        },
+        operateFun: function (v, r, i) {
+            return '<a href="javascript:void(0);" class="rowViewBtn" val="'+i+'">查看</a>' +
+                '<a href="javascript:void(0);" class="rowEditBtn" val="'+i+'">编辑</a>' +
+                '<a href="javascript:void(0);" class="rowRemoveBtn" val="'+i+'">删除</a>';
+        },
+        openTo: function(url){
+            layer.open({
+                type: 2,
+                title: false,
+                shadeClose: false, // 点击遮罩关闭层
+                area: ['90%', '90%'],
+                content: url
+            });
+        }
+    };
+    $this.init();
+});

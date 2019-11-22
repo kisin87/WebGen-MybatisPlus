@@ -35,6 +35,8 @@ public interface ConstVal {
     String MAPPER = "Mapper";
     String XML = "Xml";
     String CONTROLLER = "Controller";
+    String PAGES = "Pages";
+    String PAGES_JS = "PagesJs";
 
     String ENTITY_PATH = "entity_path";
     String SERVICE_PATH = "service_path";
@@ -42,6 +44,12 @@ public interface ConstVal {
     String MAPPER_PATH = "mapper_path";
     String XML_PATH = "xml_path";
     String CONTROLLER_PATH = "controller_path";
+    String PAGES_LIST_PATH = "pages_list_path";
+    String PAGES_LIST_JS_PATH = "pages_list_js_path";
+    String PAGES_VIEW_PATH = "pages_view_path";
+    String PAGES_VIEW_JS_PATH = "pages_view_js_path";
+    String PAGES_EDIT_PATH = "pages_edit_path";
+    String PAGES_EDIT_JS_PATH = "pages_edit_js_path";
 
     String JAVA_TMPDIR = "java.io.tmpdir";
     String UTF8 = StandardCharsets.UTF_8.name();
@@ -50,6 +58,8 @@ public interface ConstVal {
     String JAVA_SUFFIX = StringPool.DOT_JAVA;
     String KT_SUFFIX = ".kt";
     String XML_SUFFIX = ".xml";
+    String HTML_SUFFIX = ".html";
+    String JS_SUFFIX = ".js";
 
     String TEMPLATE_ENTITY_JAVA = "/templates/entity.java";
     String TEMPLATE_ENTITY_KT = "/templates/entity.kt";
@@ -58,6 +68,12 @@ public interface ConstVal {
     String TEMPLATE_SERVICE = "/templates/service.java";
     String TEMPLATE_SERVICE_IMPL = "/templates/serviceImpl.java";
     String TEMPLATE_CONTROLLER = "/templates/controller.java";
+    String TEMPLATE_PAGES_LIST = "/templates/list.html";
+    String TEMPLATE_PAGES_LIST_JS = "/templates/list.js";
+    String TEMPLATE_PAGES_VIEW = "/templates/view.html";
+    String TEMPLATE_PAGES_VIEW_JS = "/templates/view.js";
+    String TEMPLATE_PAGES_EDIT = "/templates/edit.html";
+    String TEMPLATE_PAGES_EDIT_JS = "/templates/edit.js";
 
     String VM_LOAD_PATH_KEY = "file.resource.loader.class";
     String VM_LOAD_PATH_VALUE = "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader";

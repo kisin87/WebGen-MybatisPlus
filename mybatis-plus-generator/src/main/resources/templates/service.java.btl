@@ -1,5 +1,6 @@
 package ${package.Service};
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import ${package.Entity}.${entity};
 import ${superServiceClassPackage};
 
@@ -15,6 +16,10 @@ import ${superServiceClassPackage};
 interface ${table.serviceName} : ${superServiceClass}<${entity}>
 <% }else{ %>
 public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+
+<% if(table.haveDict){ %>
+    IPage<${entity}> findAllInfo(IPage<Product> page);
+<% } %>
 
 }
 <% } %>

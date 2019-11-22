@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"></link>
+    <link rel="stylesheet" th:href="@{/bootstrap/table/css/bootstrap-table.min.css}">
+
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/table/js/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/table/js/bootstrap-table-zh-CN.min.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/app/gen/edit.js}"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <div class="fixed-table-toolbar">
+                    <div class="columns pull-right">&nbsp;</div>
+                </div>
+                <fieldset class="form-horizontal">
+                    <legend>模块信息</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">模块名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="moduleName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">包名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="packageName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">选择主表</label>
+                        <div class="col-sm-10">
+                            <select class="selDbTable form-control"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <span><b>选择关联表：</b></span>
+                        <table class="showDataTable" data-mobile-responsive="true"></table>
+                    </div>
+                    <div class="col-sm-12">&nbsp;</div>
+                    <div class="col-sm-12 text-right">
+                        <button type="button" class="btn btn-success nextBtn">下一步</button>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

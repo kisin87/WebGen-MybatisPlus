@@ -15,6 +15,10 @@
  */
 package com.baomidou.mybatisplus.generator.config.rules;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * 表字段类型
  *
@@ -75,9 +79,24 @@ public enum DbColumnType implements IColumnType {
      */
     private final String pkg;
 
+    private static Map<String, DbColumnType> nameMap = new HashMap<>();
+
     DbColumnType(final String type, final String pkg) {
         this.type = type;
         this.pkg = pkg;
+    }
+
+    static {
+        for (DbColumnType value : DbColumnType.values()) {
+            nameMap.put(value.type, value);
+        }
+    }
+
+    public DbColumnType get(String name){
+        for (DbColumnType value : DbColumnType.values()) {
+            if(value.toString().equals(name))return value;
+        }
+        return null;
     }
 
     @Override
@@ -88,5 +107,13 @@ public enum DbColumnType implements IColumnType {
     @Override
     public String getPkg() {
         return pkg;
+    }
+
+    public static DbColumnType getByType(String type){
+        return nameMap.get(type);
+    }
+
+    public static Set<String> getAllType() {
+        return nameMap.keySet();
     }
 }

@@ -4,6 +4,7 @@ dependencies {
     implementation "${lib.velocity}"
     implementation "${lib.freemarker}"
     implementation "${lib.beetl}"
+    implementation "${lib.jackson}"
 
     testCompile "${lib.sqlserver}"
     testCompile "${lib.postgresql}"

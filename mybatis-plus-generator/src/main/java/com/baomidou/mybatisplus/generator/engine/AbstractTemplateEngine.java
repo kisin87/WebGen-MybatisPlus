@@ -126,6 +126,50 @@ public abstract class AbstractTemplateEngine {
                         writer(objectMap, templateFilePath(template.getController()), controllerFile);
                     }
                 }
+                //list.html
+                if(null != tableInfo.getPagesListName() && null != pathInfo.get(ConstVal.PAGES_LIST_PATH)){
+                    String pagesListFile = String.format((pathInfo.get(ConstVal.PAGES_LIST_PATH) + File.separator + tableInfo.getPagesListName() + ConstVal.HTML_SUFFIX), entityName);
+                    if (isCreate(FileType.PAGES, pagesListFile)){
+                        writer(objectMap, templateFilePath(template.getPagesList()), pagesListFile);
+                    }
+                }
+                //list.js
+                if(null != tableInfo.getPagesListName() && null != pathInfo.get(ConstVal.PAGES_LIST_JS_PATH)){
+                    String pagesListJsFile = String.format((pathInfo.get(ConstVal.PAGES_LIST_JS_PATH) + File.separator + tableInfo.getPagesListName() + ConstVal.JS_SUFFIX), entityName);
+                    if (isCreate(FileType.PAGES_JS, pagesListJsFile)){
+                        writer(objectMap, templateFilePath(template.getPagesListJs()), pagesListJsFile);
+                    }
+                }
+                //view.html
+                if (null != tableInfo.getPagesViewName() && null != pathInfo.get(ConstVal.PAGES_VIEW_PATH)) {
+                    String pagesViewFile = String.format((pathInfo.get(ConstVal.PAGES_VIEW_PATH) + File.separator + tableInfo.getPagesViewName() + ConstVal.HTML_SUFFIX), entityName);
+                    if (isCreate(FileType.PAGES, pagesViewFile)) {
+                        writer(objectMap, templateFilePath(template.getPagesView()), pagesViewFile);
+                    }
+                }
+
+                //view.js
+                if (null != tableInfo.getPagesViewName() && null != pathInfo.get(ConstVal.PAGES_VIEW_JS_PATH)) {
+                    String pagesViewJsFile = String.format((pathInfo.get(ConstVal.PAGES_VIEW_JS_PATH) + File.separator + tableInfo.getPagesViewName() + ConstVal.JS_SUFFIX), entityName);
+                    if (isCreate(FileType.PAGES_JS, pagesViewJsFile)) {
+                        writer(objectMap, templateFilePath(template.getPagesViewJs()), pagesViewJsFile);
+                    }
+                }
+
+                //edit.html
+                if (null != tableInfo.getPagesEditName() && null != pathInfo.get(ConstVal.PAGES_EDIT_PATH)) {
+                    String pagesEditFile = String.format((pathInfo.get(ConstVal.PAGES_EDIT_PATH) + File.separator + tableInfo.getPagesEditName() + ConstVal.HTML_SUFFIX), entityName);
+                    if (isCreate(FileType.PAGES, pagesEditFile)) {
+                        writer(objectMap, templateFilePath(template.getPagesEdit()), pagesEditFile);
+                    }
+                }
+                //edit.js
+                if (null != tableInfo.getPagesEditName() && null != pathInfo.get(ConstVal.PAGES_EDIT_JS_PATH)) {
+                    String pagesEditJsFile = String.format((pathInfo.get(ConstVal.PAGES_EDIT_JS_PATH) + File.separator + tableInfo.getPagesEditName() + ConstVal.JS_SUFFIX), entityName);
+                    if (isCreate(FileType.PAGES_JS, pagesEditJsFile)) {
+                        writer(objectMap, templateFilePath(template.getPagesEditJs()), pagesEditJsFile);
+                    }
+                }
             }
         } catch (Exception e) {
             logger.error("无法创建文件，请检查配置信息！", e);

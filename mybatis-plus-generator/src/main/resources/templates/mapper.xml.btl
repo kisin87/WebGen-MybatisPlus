@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${package.Mapper}.${table.mapperName}">
-
+<% var dictColumn = '';%>
 <% if(enableCache){ %>
     <!-- 开启二级缓存 -->
     <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
@@ -16,10 +16,10 @@
         <id column="${field.name}" property="${field.propertyName}" />
    <% } %>
 <% } %>
-<% for(field in table.commonFields){ %>
+<%if(isNotEmpty(table.commonFields)){for(field in table.commonFields){ %>
     <% /** 生成公共字段 **/ %>
     <result column="${field.name}" property="${field.propertyName}" />
-<% } %>
+<% }}%>
 <% for(field in table.fields){ %>
    <% /** 生成普通字段 **/ %>
    <% if(!field.keyFlag){ %>
@@ -27,6 +27,36 @@
    <% } %>
 <% } %>
     </resultMap>
+
+    <resultMap id="InfoBaseResultMap" type="${package.Entity}.${entity}">
+<% for(field in table.fields){ %>
+   <% /** 生成主键排在第一位 **/ %>
+   <% if(field.keyFlag){ %>
+        <id column="${field.name}" property="${field.propertyName}" />
+   <% } %>
+<% } %>
+<%if(isNotEmpty(table.commonFields)){for(field in table.commonFields){ %>
+    <% /** 生成公共字段 **/ %>
+    <result column="${field.name}" property="${field.propertyName}" />
+<% }}%>
+<% for(field in table.fields){ %>
+   <% /** 生成普通字段 **/ %>
+   <% if(!field.keyFlag){ %>
+        <result column="${field.name}" property="${field.propertyName}" />
+   <% } %>
+<% } %>
+
+<% for(field in table.fields){ %>
+    <% /** 生成普通字段 **/ %>
+        <% if(isNotEmpty(field.dictType)){
+        dictColumn = dictColumn + ", "+ "'"+field.dictType+"' as "+field.name+"_dict";%>
+        <association property="${field.propertyName}Dict"
+                     column="{dictType=${field.name}_dict, dictValue=${field.name}}"
+                     select="com.kisin.dict.mapper.DictMapper.selectDict"/>
+        <% } %>
+<% } %>
+    </resultMap>
+
 <% } %>
 <% if(baseColumnList){ %>
     <!-- 通用查询结果列 -->
@@ -37,5 +67,10 @@
         ${table.fieldNames}
     </sql>
 
+<% } %>
+<% if(table.haveDict){ %>
+    <select id="selectAllInfo" resultMap="InfoBaseResultMap">
+        select ${table.fieldNames} ${dictColumn} from ${table.name}
+    </select>
 <% } %>
 </mapper>

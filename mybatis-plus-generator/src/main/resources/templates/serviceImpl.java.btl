@@ -1,9 +1,11 @@
 package ${package.ServiceImpl};
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
 import ${superServiceImplClassPackage};
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,6 +23,15 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 }
 <% }else{ %>
 public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+
+<% if(table.haveDict){ %>
+    @Autowired
+    ${table.mapperName} ${classNameToField(table.mapperName)};
+
+    public IPage<${entity}> findAllInfo(IPage<${entity}> page){
+        return page.setRecords(${classNameToField(table.mapperName)}.selectAllInfo());
+    }
+<% } %>
 
 }
 <% } %>

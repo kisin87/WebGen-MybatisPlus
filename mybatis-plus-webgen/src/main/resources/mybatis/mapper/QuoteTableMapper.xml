@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kisin.gen.dao.QuoteTableMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.kisin.gen.entity.QuoteTable">
+        <id column="quote_id" property="quoteId" />
+        <result column="table_name" property="tableName" />
+        <result column="fields" property="fields" />
+        <result column="where_field_json" property="whereFieldJson" />
+        <result column="match_field" property="matchField" />
+        <result column="descs" property="descs" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <resultMap id="InfoBaseResultMap" type="com.kisin.gen.entity.QuoteTable">
+        <id column="quote_id" property="quoteId" />
+        <result column="table_name" property="tableName" />
+        <result column="fields" property="fields" />
+        <result column="where_field_json" property="whereFieldJson" />
+        <result column="match_field" property="matchField" />
+        <result column="descs" property="descs" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+
+        <association property="tableInfo"
+                     column="table_name"
+                     select="com.kisin.gen.dao.TableInfoMapper.findByName"
+                    />
+    </resultMap>
+</mapper>

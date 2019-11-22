@@ -3,6 +3,9 @@ package ${package.Mapper};
 import ${package.Entity}.${entity};
 import ${superMapperClassPackage};
 
+<% if(table.haveDict){ %>
+import java.util.List;
+<% } %>
 /**
  * <p>
  * ${table.comment!} Mapper 接口
@@ -16,5 +19,8 @@ interface ${table.mapperName} : ${superMapperClass}<${entity}>
 <% }else{ %>
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
+    <% if(table.haveDict){ %>
+    List<${entity}> selectAllInfo();
+    <% } %>
 }
 <% } %>

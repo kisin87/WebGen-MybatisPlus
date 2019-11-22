@@ -45,6 +45,18 @@ public class TemplateConfig {
 
     private String controller = ConstVal.TEMPLATE_CONTROLLER;
 
+    private String pagesList = ConstVal.TEMPLATE_PAGES_LIST;
+
+    private String pagesListJs = ConstVal.TEMPLATE_PAGES_LIST_JS;
+
+    private String pagesView = ConstVal.TEMPLATE_PAGES_VIEW;
+
+    private String pagesViewJs = ConstVal.TEMPLATE_PAGES_VIEW_JS;
+
+    private String pagesEdit = ConstVal.TEMPLATE_PAGES_EDIT;
+
+    private String pagesEditJs = ConstVal.TEMPLATE_PAGES_EDIT_JS;
+
     public String getEntity(boolean kotlin) {
         return kotlin ? entityKt : entity;
     }

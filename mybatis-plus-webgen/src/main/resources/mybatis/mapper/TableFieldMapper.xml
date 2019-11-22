@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kisin.gen.dao.TableFieldMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.baomidou.mybatisplus.generator.config.po.TableField">
+        <id column="field_id" property="fieldId" />
+        <result column="name" property="name" />
+        <result column="input_type_value" property="inputTypeValue" />
+        <result column="key_identity_flag" property="keyIdentityFlag" />
+        <result column="key_flag" property="keyFlag" />
+        <result column="type" property="type" />
+        <result column="comment" property="comment" />
+        <result column="list" property="list" />
+        <result column="input_type" property="inputType" />
+        <result column="edit" property="edit" />
+        <result column="cell_num" property="cellNum" />
+        <result column="property_name" property="propertyName" />
+        <result column="property_type" property="propertyType" />
+        <result column="table_id" property="tableId" />
+        <result column="lable_name" property="lableName" />
+    </resultMap>
+
+    <select id="findByTableId" resultMap="BaseResultMap">
+        select * from t_table_field where table_id = #{tableId}
+    </select>
+
+</mapper>

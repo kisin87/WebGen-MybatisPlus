@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>test</title>
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jqGrid/js/i18n/grid.locale-cn.js}"></script>
+    <script type="text/javascript" th:src="@{/jqGrid/js/jquery.jqGrid.min.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/jqGrid/css/ui.jqgrid-bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/jqGrid/css/ui.jqgrid-bootstrap-ui.css}">
+    <script>
+        $.jgrid.defaults.width = 780;
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <meta charset="utf-8" />
+    <title>jqGrid Loading Data - Million Rows from a REST service</title>
+</head>
+<body>
+<div style="margin-left:20px">
+    <input class="btn btn-default" type="button" value="Edit in Batch Mode" onclick="startEdit()" />
+    <input class="btn btn-default" type="button" value="Save All Rows" onclick="saveRows()" />
+
+    <br /><br />
+
+    <table id="jqGrid"></table>
+    <div id="jqGridPager"></div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#jqGrid").jqGrid({
+            url: "/data/gen/table/field/list?tableId=8effb51462530d76195ce078b5639faf",
+            datatype: "json",
+            jsonReader: {root: "data"},
+            colModel: [
+                {
+                    label: "Employee ID",
+                    name: 'name',
+                    width: 75
+                },
+                {
+                    label: "First Name",
+                    name: 'type',
+                    width: 140,
+                    editable: true // must set editable to true if you want to make the field editable
+                },
+                {
+                    label: "Last Name",
+                    name: 'comment',
+                    width: 100,
+                    editable: true
+                },
+                {
+                    label : "City",
+                    name: 'propertyName',
+                    width: 120,
+                    editable: true
+                }
+            ],
+            loadComplete:function () {
+                var grid = $("#jqGrid");
+                var ids = grid.jqGrid('getDataIDs');
+
+                for (var i = 0; i < ids.length; i++) {
+                    grid.jqGrid('editRow',ids[i]);
+                }
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

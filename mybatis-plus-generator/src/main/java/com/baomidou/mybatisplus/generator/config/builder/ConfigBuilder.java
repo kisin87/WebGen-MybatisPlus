@@ -142,6 +142,22 @@ public class ConfigBuilder {
         handlerStrategy(this.strategyConfig);
     }
 
+    public ConfigBuilder(PackageConfig packageConfig, StrategyConfig strategyConfig,
+                         TemplateConfig template, GlobalConfig globalConfig, List<TableInfo> tableInfoList) {
+        this.globalConfig = globalConfig;
+        this.template = template;
+        this.strategyConfig = strategyConfig;
+        handlerPackage(this.template, this.globalConfig.getOutputDir(), packageConfig);
+        this.commentSupported = true;
+        dataSourceConfig = null;
+        processTypes(this.strategyConfig);
+        tableInfoList.forEach(tableInfo -> {
+            tableInfo.setConvert(true);
+            checkImportPackages(tableInfo);
+        });
+        this.tableInfoList = tableInfoList;
+    }
+
     // ************************ 曝露方法 BEGIN*****************************
 
     /**
@@ -233,10 +249,14 @@ public class ConfigBuilder {
         packageInfo.put(ConstVal.MODULE_NAME, config.getModuleName());
         packageInfo.put(ConstVal.ENTITY, joinPackage(config.getParent(), config.getEntity()));
         packageInfo.put(ConstVal.MAPPER, joinPackage(config.getParent(), config.getMapper()));
-        packageInfo.put(ConstVal.XML, joinPackage(config.getParent(), config.getXml()));
+        //packageInfo.put(ConstVal.XML, joinPackage(config.getParent(), config.getXml()));
+        packageInfo.put(ConstVal.XML, joinPackage("mybatis.mapper", config.getModuleName()));
         packageInfo.put(ConstVal.SERVICE, joinPackage(config.getParent(), config.getService()));
         packageInfo.put(ConstVal.SERVICE_IMPL, joinPackage(config.getParent(), config.getServiceImpl()));
         packageInfo.put(ConstVal.CONTROLLER, joinPackage(config.getParent(), config.getController()));
+        packageInfo.put(ConstVal.PAGES, joinPath(config.getModuleName()));
+        packageInfo.put(ConstVal.PAGES_JS, joinPath("js.app", config.getModuleName()));
+
 
         // 自定义路径
         Map<String, String> configPathInfo = config.getPathInfo();
@@ -251,6 +271,12 @@ public class ConfigBuilder {
             setPathInfo(pathInfo, template.getService(), outputDir, ConstVal.SERVICE_PATH, ConstVal.SERVICE);
             setPathInfo(pathInfo, template.getServiceImpl(), outputDir, ConstVal.SERVICE_IMPL_PATH, ConstVal.SERVICE_IMPL);
             setPathInfo(pathInfo, template.getController(), outputDir, ConstVal.CONTROLLER_PATH, ConstVal.CONTROLLER);
+            setPathInfo(pathInfo, template.getPagesList(), outputDir+".templates", ConstVal.PAGES_LIST_PATH, ConstVal.PAGES);
+            setPathInfo(pathInfo, template.getPagesListJs(), outputDir+".static", ConstVal.PAGES_LIST_JS_PATH, ConstVal.PAGES_JS);
+            setPathInfo(pathInfo, template.getPagesView(), outputDir+".templates", ConstVal.PAGES_VIEW_PATH, ConstVal.PAGES);
+            setPathInfo(pathInfo, template.getPagesViewJs(), outputDir+".static", ConstVal.PAGES_VIEW_JS_PATH, ConstVal.PAGES_JS);
+            setPathInfo(pathInfo, template.getPagesEdit(), outputDir+".templates", ConstVal.PAGES_EDIT_PATH, ConstVal.PAGES);
+            setPathInfo(pathInfo, template.getPagesEditJs(), outputDir+".static", ConstVal.PAGES_EDIT_JS_PATH, ConstVal.PAGES_JS);
         }
     }
 
@@ -658,14 +684,24 @@ public class ConfigBuilder {
      * @return 连接后的路径
      */
     private String joinPath(String parentDir, String packageName) {
-        if (StringUtils.isEmpty(parentDir)) {
+        return joinPath(parentDir, packageName, true);
+    }
+
+    private String joinPath(String packageName) {
+        return joinPath(null, packageName, false);
+    }
+
+    private String joinPath(String parentDir, String packageName, boolean haveDefaultParentDir) {
+        if (StringUtils.isEmpty(parentDir) && haveDefaultParentDir) {
             parentDir = System.getProperty(ConstVal.JAVA_TMPDIR);
+        }
+        if(StringUtils.isEmpty(parentDir)){
+            parentDir = "";
         }
         if (!StringUtils.endsWith(parentDir, File.separator)) {
             parentDir += File.separator;
         }
-        packageName = packageName.replaceAll("\\.", StringPool.BACK_SLASH + File.separator);
-        return parentDir + packageName;
+        return (parentDir + packageName).replaceAll("\\.", StringPool.BACK_SLASH + File.separator);
     }
 
 
@@ -682,7 +718,6 @@ public class ConfigBuilder {
         }
         return parent + StringPool.DOT + subPackage;
     }
-
 
     /**
      * 处理字段名称

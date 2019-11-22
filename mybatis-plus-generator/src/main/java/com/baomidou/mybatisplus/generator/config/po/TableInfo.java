@@ -20,8 +20,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
@@ -35,25 +40,46 @@ import lombok.experimental.Accessors;
  * @since 2016/8/30
  */
 @Data
+@KeySequence
 @Accessors(chain = true)
-public class TableInfo {
+@TableName("t_table_info")
+public class TableInfo extends Model<TableInfo> {
 
-    private final Set<String> importPackages = new HashSet<>();
-    private boolean convert;
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "table_id", type = IdType.UUID)
+    private String tableId;
+    private String genId;
     private String name;
     private String comment;
+    private String controllerName;
     private String entityName;
+    private String fieldNames;
     private String mapperName;
-    private String xmlName;
     private String serviceName;
     private String serviceImplName;
-    private String controllerName;
+    private String xmlName;
+    private Boolean mainTable;
+
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private final Set<String> importPackages = new HashSet<>();
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private boolean convert;
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
     private List<TableField> fields;
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private String pagesListName = "list";
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private String pagesEditName = "edit";
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private String pagesViewName = "view";
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private boolean haveDict;
     /**
      * 公共字段
      */
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
     private List<TableField> commonFields;
-    private String fieldNames;
 
     public TableInfo setConvert(boolean convert) {
         this.convert = convert;
@@ -99,13 +125,13 @@ public class TableInfo {
                 if (null != field.getColumnType() && null != field.getColumnType().getPkg()) {
                     importPackages.add(field.getColumnType().getPkg());
                 }
-                if (field.isKeyFlag()) {
+                if (field.getKeyFlag()!=null && field.getKeyFlag()) {
                     // 主键
-                    if (field.isConvert() || field.isKeyIdentityFlag()) {
+                    if (field.isConvert() || (field.getKeyIdentityFlag()!=null && field.getKeyIdentityFlag())) {
                         importPackages.add(com.baomidou.mybatisplus.annotation.TableId.class.getCanonicalName());
                     }
                     // 自增
-                    if (field.isKeyIdentityFlag()) {
+                    if (field.getKeyIdentityFlag()!=null && field.getKeyIdentityFlag()) {
                         importPackages.add(com.baomidou.mybatisplus.annotation.IdType.class.getCanonicalName());
                     }
                 } else if (field.isConvert()) {
@@ -116,6 +142,9 @@ public class TableInfo {
                     // 填充字段
                     importPackages.add(com.baomidou.mybatisplus.annotation.TableField.class.getCanonicalName());
                     importPackages.add(com.baomidou.mybatisplus.annotation.FieldFill.class.getCanonicalName());
+                }
+                if (null != field.getDictType() && !"".equals(field.getDictType().trim())) {
+                    this.haveDict = true;
                 }
             }
         }
@@ -138,7 +167,7 @@ public class TableInfo {
      * 转换filed实体为 xml mapper 中的 base column 字符串信息
      */
     public String getFieldNames() {
-        if (StringUtils.isEmpty(fieldNames)) {
+        if (StringUtils.isEmpty(fieldNames) && this.fields!=null) {
             StringBuilder names = new StringBuilder();
             IntStream.range(0, fields.size()).forEach(i -> {
                 TableField fd = fields.get(i);
@@ -152,4 +181,5 @@ public class TableInfo {
         }
         return fieldNames;
     }
+
 }

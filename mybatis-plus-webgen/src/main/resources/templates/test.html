@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>test</title>
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jqGrid/js/i18n/grid.locale-cn.js}"></script>
+    <script type="text/javascript" th:src="@{/jqGrid/js/jquery.jqGrid.min.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/jqGrid/css/ui.jqgrid-bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/jqGrid/css/ui.jqgrid-bootstrap-ui.css}">
+    <meta charset="utf-8" />
+    <title>jqGrid Loading Data - Million Rows from a REST service</title>
+    <style type="text/css">
+        #jqGrid tr td{
+            text-align:center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div style="margin-left:20px">
+    <table id="jqGrid"></table>
+    <div id="jqGridPager"></div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        let javaTypeArray=[],inputTypeArray=[];
+        $.ajax({
+            async : false,
+            method: 'get',
+            url: '/data/gen/data',
+            dataType:"json",
+            success:function (result) {
+                javaTypeArray = result.data['JAVA_TYPE_LIST'].map(v=>(v+':'+v));
+                inputTypeArray = result.data['INPUT_TYPE_LIST'];
+            }
+        });
+
+        console.log(javaTypeArray);
+        $("#jqGrid").jqGrid({
+            //url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+            url: "/data/gen/table/field/list?tableId=8effb51462530d76195ce078b5639faf",
+            styleUI : 'Bootstrap',
+            datatype: "json",
+            jsonReader: {root: "data"},
+            colModel: [
+                {label: '字段名', name: 'name', width: 150},
+                {label: '字段类型', name: 'type', width: 120},
+                {label: '描述', name: 'comment'},
+                {label: '属性名', name: 'propertyName', width: 150, editable: true},
+                {label: '属性类型', name: 'propertyType', width: 100, editable: true, edittype: "select", editoptions: {value: javaTypeArray.join(';')}},
+                {label: '表签名', name: 'lableName', width: 150, editable: true},
+                {label: '列表', name: 'list', valign: 'middle', align: "center", editable: true, edittype:"checkbox",
+                editOptions:{
+                    dataEvents:[{
+                        type: 'checked',
+                        fn: function(e) {
+                            console.log(111);
+                            console.log(e);
+                        }
+                    }]
+                }},
+                {label: '编辑', name: 'edit', align: "center", editable: true, edittype:"checkbox"},
+                {label: '引用', name: 'quoteTable', align: "center", editable: true, edittype:"checkbox"}
+            ],
+            loadComplete:function () {
+                var grid = $("#jqGrid");
+                var ids = grid.jqGrid('getDataIDs');
+
+                for (var i = 0; i < ids.length; i++) {
+                    grid.jqGrid('editRow',ids[i]);
+                }
+            },
+            viewrecords: true,
+            width: '100%',
+            height: 650,
+        });
+    });
+
+
+    /*
+    *
+    *
+    * $("#showData").jqGrid({
+        height: 450,
+        autowidth: true,
+        url: "/data/gen/table/field/list?tableId=8effb51462530d76195ce078b5639faf",//请求数据地址
+        datatype: "json",
+        jsonReader: {root: "data"},
+        //mtype: "post",//请求方式
+        colNames: ['fieldId', '登录名', '真实姓名'],//表头名
+        colModel: [//与colNames一一对应
+            {name: 'fieldId', index: 'fieldId', width: 60, align: "center"},
+            {name: 'tableId', index: 'tableId', width: 80, align: "center", sorttype: "date"},
+            {name: 'capitalName', index: 'capitalName', editable: true, align: "center", width: 80}
+        ],
+        altRows: true,//单双行样式不同
+        rownumbers: true
+    });
+    * */
+</script>
+</body>
+</html>

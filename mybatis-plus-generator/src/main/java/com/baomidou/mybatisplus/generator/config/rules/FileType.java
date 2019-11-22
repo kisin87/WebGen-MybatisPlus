@@ -28,5 +28,7 @@ public enum FileType {
     SERVICE,
     SERVICE_IMPL,
     CONTROLLER,
+    PAGES,
+    PAGES_JS,
     OTHER
 }

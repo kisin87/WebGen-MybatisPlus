@@ -102,21 +102,21 @@ public class MysqlGenerator extends GeneratorTest {
                 })
                 .setDriverName(Driver.class.getName())
                 .setUsername("root")
-                .setPassword("1q2w3e4r")
-                .setUrl("jdbc:mysql://127.0.0.1:3306/mybatis-plus?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8")
+                .setPassword("root123123")
+                .setUrl("jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8")
         ).setStrategy(
             // 策略配置
             new StrategyConfig()
                 // .setCapitalMode(true)// 全局大写命名
                 // .setDbColumnUnderline(true)//全局下划线命名
-                .setTablePrefix(new String[]{"bmd_", "mp_"})// 此处可以修改为您的表前缀
+                .setTablePrefix(new String[]{"t_", "test", "mp_"})// 此处可以修改为您的表前缀
                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                // .setInclude(new String[] { "user" }) // 需要生成的表
+                .setInclude(new String[] { "t_table_info", "t_table_field" }) // 需要生成的表
                 // .setExclude(new String[]{"test"}) // 排除生成的表
                 // 自定义实体父类
                 // .setSuperEntityClass("com.baomidou.demo.TestEntity")
                 // 自定义实体，公共字段
-                .setSuperEntityColumns(new String[]{"test_id"})
+                //.setSuperEntityColumns(new String[]{"test_id"})
                 .setTableFillList(tableFillList)
                 .setEntityBooleanColumnRemoveIsPrefix(true)
             // 自定义 mapper 父类

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"></link>
+    <link rel="stylesheet" th:href="@{/bootstrap/table/css/bootstrap-table.min.css}">
+    <link rel="stylesheet" th:href="@{/bootstrap/table/css/bootstrap-table-cell-input.min.css}">
+    <link rel="stylesheet" th:href="@{/layer/theme/default/layer.css}">
+
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.tmpl.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.serializejson.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/app/common/kisin.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/table/js/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/table/js/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/table/js/bootstrap-table-cell-input.min.js}"></script>
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/app/gen/table/edit.js}"></script>
+    <style type="text/css">
+        .tableContent{
+            padding-bottom: 50px;
+        }
+        .showTableInfo{
+            cursor: pointer;
+        }
+        .tableInfo{
+            display: none;
+        }
+        .margin-right50{
+            margin-right: 50px;
+        }
+    </style>
+
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <form id="form1" class="form-horizontal">
+                    <div class="col-sm-12" id="tableInfoContent"></div>
+                    <div class="col-sm-12">
+                        <button type="button" class="btn sub-btn btn-default margin-right50" gen="0">保存</button>
+                        <button type="button" class="btn sub-btn btn-success" gen="1">保存并生成文件</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="tableContentTmpl">
+    <fieldset class="tableContent">
+        <legend>{%if mainTable%}<h3> ${tableName} [主表]</h3>{%else%}${tableName}{%/if%}</legend>
+        <p class="text-primary showTableInfo">点击展开Java对象详细命名信息<span class="glyphicon glyphicon-chevron-down"></span></p>
+        <div class="row tableInfo">
+            <div class="form-group col-sm-6">
+                <label class="col-sm-2 control-label">entity</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="table[][entityName]" value="${entityName}" />
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-2 control-label">controller</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="table[][controllerName]" value="${controllerName}" />
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-2 control-label">service</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="table[][serviceName]" value="${serviceName}" />
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-2 control-label">serviceImpl</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="table[][serviceImplName]" value="${serviceImplName}" />
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-2 control-label">mapper</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="table[][mapperName]" value="${mapperName}" />
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-2 control-label">xmlMapper</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="table[][xmlName]" value="${xmlName}" />
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <label class="col-sm-1 control-label">描述</label>
+                <div class="col-sm-11">
+                    <textarea class="form-control" name="table[][comment]">${comment}</textarea>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="table[][tableId]" value="${tableId}" />
+        <input type="hidden" name="table[][genId]" value="${genId}" />
+        <input type="hidden" name="table[][name]" value="${name}" />
+        <input type="hidden" name="table[][fieldNames]" value="${fieldNames}" />
+        <input type="hidden" name="table[][mainTable]" value="${mainTable}" />
+        <table class="showDataTable" id="${tableId}"></table>
+    </fieldset>
+</script>
+</body>
+</html>

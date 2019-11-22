@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"></link>
+    <link rel="stylesheet" th:href="@{/bootstrap/table/css/bootstrap-table.min.css}">
+
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.tmpl.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.serializejson.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/table/js/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/table/js/bootstrap-table-zh-CN.min.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/app/gen/quote/table/edit.js}"></script>
+    <style rel="stylesheet" type="text/css">
+        .activation {
+            border: 1px solid rgb(74, 132, 176) !important;
+            color: rgb(74, 132, 176) !important;
+        }
+
+        .menuSelBtn {
+            margin-top: 5px;
+        }
+
+        .menuSelBtn .col-sm-12 {
+            margin-bottom: 4px;
+        }
+
+        .menuSelBtn span {
+            display: block;
+            padding: 10px 5px;
+            font-size: 18px;
+            font-weight: 700px;
+            line-height: 1.1;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            color: #999;
+        }
+
+        .input-field-set {
+            margin-bottom: 20px;
+        }
+
+        .input-field-set .input-label {
+            font-size: 16px;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+            padding-top: 7px;
+            margin-bottom: 0;
+            text-align: right;
+        }
+
+        .input-field-set .input-field{
+            min-height: 40px;
+            font-size: 16px;
+            padding: 8px 5px;
+            display: block;
+            line-height: 1.1;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .margin-bottom10{
+            margin-bottom: 10px;
+        }
+
+        .my-hide{
+            display: none;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <div class="fixed-table-toolbar">
+                    <div class="columns pull-right">&nbsp;</div>
+                </div>
+                <fieldset class="form-horizontal">
+                    <legend>请配置引用表</legend>
+                    <div class="col-sm-2">
+                        <div class="row menuSelBtn"></div>
+                    </div>
+                    <div class="col-sm-10">
+                        <form id="form1">
+                            <div class="input-field-set col-sm-12">
+                                <label class="col-sm-2 input-label">配置描述</label>
+                                <input type="text" class="col-sm-10 input-field desc" name="quote[descs]">
+                                <input type="hidden" id="tableName" name="quote[tableName]">
+                            </div>
+                            <div class="input-field-set col-sm-12">
+                                <label class="col-sm-2 input-label">表信息</label>
+                                <div class="col-sm-10 input-field tableInfo"></div>
+                            </div>
+                            <div class="input-field-set col-sm-12">
+                                <label class="col-sm-2 input-label">显示字段</label>
+                                <div class="col-sm-10 input-field showTableFiled"></div>
+                            </div>
+
+                            <div class="input-field-set col-sm-12">
+                                <label class="col-sm-2 input-label">条件字段</label>
+                                <div class="col-sm-10 input-field">
+                                    <table class="whereFieldJsonTable table table-hover table-stripe my-hide">
+                                        <thead>
+                                            <tr>
+                                                <th>字段</th>
+                                                <th>值类型</th>
+                                                <th>值</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4"><a class="addWhereFieldJsonBtn" href="javascript:void(0)">点击添加</a></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="input-field-set col-sm-12">
+                                <label class="col-sm-2 input-label">匹配字段</label>
+                                <div class="col-sm-10 input-field matchFieldParent">
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 text-center">
+                                <button type="button" class="subBtn">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="tableInfoTemp">
+    <h4>${name}：</h4>${comment}
+</script>
+<script type="text/html" id="leftMenuTemp">
+    {%each tableInfo %}
+    <div class="col-sm-12"><span val="${Name}" comment="${Comment}" class="${Name}">${Name}</span></div>
+    {%/each%}
+</script>
+<script type="text/html" id="checkboxFieldTemp">
+    {%each fieldArray %}
+    <div class="col-sm-3 margin-bottom10">
+        <input type="checkbox" name="quote[fields][]" checked="checked" value="${Field}">${Field}
+    </div>
+    {%/each%}
+</script>
+<script type="text/html" id="whereFieldJsonTemp">
+    <tr>
+        <td>
+            <select class="wfj-filed" name="quote[whereFieldJson][][filed]">
+                {%each fieldArray %}
+                <option value="${Field}">${Field}</option>
+                {%/each%}
+            </select>
+        </td>
+        <td><select class="wfj-type" name="quote[whereFieldJson][][type]"><option value="1">固定值</option><option value="2">字段值</option></select></td>
+        <td class="wfj-value-p"></td>
+        <td><button class="wfj-del" type="button">删除</button></td>
+    </tr>
+</script>
+<script type="text/html" id="whereFieldJsonTemp_1">
+    <input type="text" name="quote[whereFieldJson][][value]">
+</script>
+<script type="text/html" id="whereFieldJsonTemp_2">
+    <select name="quote[whereFieldJson][][value]">
+        {%each parentTableData%}
+        <option value="${fieldId}">${name}</option>
+        {%/each%}
+    </select>
+</script>
+<script type="text/html" id="matchFieldTemp">
+    <select name="quote[matchField]">
+        {%each fieldArray%}
+            <option value="${Field}">${Field}</option>
+        {%/each%}
+    </select> 与${fieldName}字段匹配
+</script>
+</body>
+</html>

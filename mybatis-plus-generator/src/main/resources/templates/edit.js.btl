@@ -1,0 +1,58 @@
+$(function(){
+    $this = {
+        ids: {<% for(field in table.fields){if(field.keyFlag){ %>${field.propertyName}: $.getUrlParam("${field.propertyName}"),<% }} %>},
+        entity: {<% for(field in table.fields){ %>${field.propertyName}:'',<% } %>},
+        entityData: new Object(),
+        init: function () {
+            $.post('<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>/data', $this.ids, $this.buildInputView);
+        },
+        buildInputView: function (result) {
+            if(!result || result.code!='200'){
+                layer.alert('数据加载失败！');
+            }
+            $this.entityData = result.data||$this.entity;
+            <% for(field in table.fields){if(isNotEmpty(field.dictType)){ %>
+            $this.entityData['${field.propertyName}List'] = $this.queryDict('${field.dictType}');
+            <% }} %>
+            $('#inputHtmlTmpl').tmpl($this.entityData).appendTo('.form1');
+            $('.submitBtn').click($this.submit);
+            $('.cancelBtn').click($this.toList);
+        },
+        submit: function () {
+            $.post('<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>/edit', $('.form1').serialize(), function (result) {
+                if(result && result.code=='200'){
+                    layer.msg('保存成功！', {time: 600}, $this.toList);
+                }else{
+                    layer.msg('保存失败！');
+                }
+            });
+        },
+    <% if(table.haveDict){ %>
+        queryDict: function(type) {
+            let value = null;
+            $.ajax({
+                async: false,
+                type: 'post',
+                url: '/dict/dict/type/list',
+                data:{type:type},
+                success: function (result) {
+                    if(result.code!=200){
+                        value=null;
+                        alert("数据拉取失败！");
+                    }
+                    value = result.data;
+                },
+                error: function (err) {
+                    value=null;
+                    alert("数据拉取失败！"+err);
+                }
+            });
+            return value;
+        },
+    <% } %>
+        toList: function () {
+            parent.location.reload();
+        }
+    }
+    $this.init();
+});

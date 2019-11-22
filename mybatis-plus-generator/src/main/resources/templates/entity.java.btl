@@ -11,6 +11,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 <% } %>
+<% if(table.haveDict){%>
+import com.kisin.dict.entity.Dict;
+<% } %>
 /**
  * <p>
  * ${table.comment!}
@@ -98,6 +101,10 @@ public class ${entity} implements Serializable {
     @TableLogic
     <% } %>
     private ${field.propertyType} ${field.propertyName};
+    <% if(isNotEmpty(field.dictType)){%>
+    @com.baomidou.mybatisplus.annotation.TableField(exist = false)
+    private Dict ${field.propertyName}Dict;
+    <% }%>
 <% } %>
 <% /** -----------END 字段循环遍历----------- **/ %>
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/bootstrap/table/css/bootstrap-table.min.css}">
+
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery/js/jquery.tmpl.js}"></script>
+    <script type="text/javascript" th:src="@{/js/app/common/kisin.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/table/js/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/table/js/bootstrap-table-zh-CN.min.js}"></script>
+
+    <script type="text/javascript" th:src="@{/${package.PagesJs}/${table.pagesViewName}.js}"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <div class="fixed-table-toolbar">
+                    <div class="columns pull-right">&nbsp;</div>
+                </div>
+                <div class="form-horizontal showDataView"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="showHtmlTmpl">
+    <% for(field in table.fields){%>
+    <%if(isNotEmpty(field.edit) && field.list){%>
+    <div class="col-sm-${field.cellNumEnum.cellSizes[0]}">
+        <div class="form-group">
+            <label class="col-sm-${field.cellNumEnum.cellSizes[1]} control-label">${field.lableName}</label>
+            <div class="col-sm-${field.cellNumEnum.cellSizes[2]}">
+                <div class="form-control">\${${field.propertyName}}</div>
+            </div>
+        </div>
+    </div>
+    <%}else if(field.keyFlag){%>
+    <input type="hidden" name="${field.propertyName}" value="\${${field.propertyName}}">
+    <%}}%>
+    <div class="col-sm-12 text-center">
+        <button type="button" class="btn btn-success editBtn">编辑</button>
+        <button type="button" class="btn btn-default cancelBtn">取消</button>
+    </div>
+</script>
+</body>
+</html>

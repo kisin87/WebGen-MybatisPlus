@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kisin.product.mapper.ProductMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.kisin.product.entity.Product">
+        <id column="id" property="id" />
+        <result column="company" property="company" />
+        <result column="sell" property="sell" />
+        <result column="name" property="name" />
+        <result column="status" property="status" />
+        <result column="colors" property="colors" />
+        <result column="type_id" property="typeId" />
+    </resultMap>
+
+    <resultMap id="InfoBaseResultMap" type="com.kisin.product.entity.Product">
+        <id column="id" property="id" />
+        <result column="company" property="company" />
+        <result column="sell" property="sell" />
+        <result column="name" property="name" />
+        <result column="status" property="status" />
+        <result column="colors" property="colors" />
+        <result column="type_id" property="typeId" />
+
+        <association property="sellDict"
+                     column="{dictType=sell_dict, dictValue=sell}"
+                     select="com.kisin.dict.mapper.DictMapper.selectDict"/>
+        <association property="statusDict"
+                     column="{dictType=status_dict, dictValue=status}"
+                     select="com.kisin.dict.mapper.DictMapper.selectDict"/>
+        <association property="colorsDict"
+                     column="{dictType=colors_dict, dictValue=colors}"
+                     select="com.kisin.dict.mapper.DictMapper.selectDict"/>
+    </resultMap>
+
+    <select id="selectAllInfo" resultMap="InfoBaseResultMap">
+        select id, name, colors, company, status, sell, type_id , 'product-sell' as sell_dict, 'product-status' as status_dict, 'product-color' as colors_dict from t_product
+    </select>
+</mapper>
